@@ -1,0 +1,124 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.carte {
+  position: relative;
+  width: 206px;
+  /*height: 350px;*/
+  display: flex;
+  flex-direction: column;
+  
+}
+
+ul {
+    display: flex;
+    flex-direction: row;
+    list-style-type: none;
+    align-items: center; justify-content: center;
+    gap: 100px;
+    height: 80px;
+}
+
+li {
+    gap:50px;
+}
+
+
+.carte_image {
+  width: 100%;
+  height: auto;
+  flex-shrink: 0;
+}
+
+.horizontal {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  padding: 0 8px;
+}
+
+.carte .horizontal h2 {
+  font-size: 24px;
+  text-align: center;
+}
+
+.carte .horizontal h3 {
+    font-size: 18px;
+    text-align: center;
+    line-height: 16px;
+    white-space: normal;    
+    word-break: break-word;  
+    align-items: center;
+}
+
+.carte_nom,
+.carte_mana,
+.carte_atk,
+.carte_hp {
+    color: white;
+  margin: 4px 0;
+}
+
+.carte_mana {
+  flex: 1;
+}
+
+.carte_nom {
+  flex: 4;
+  margin-right: 22px;
+}
+
+.carte_header {
+  position: absolute;
+  top: 0;  
+  width: 100%;  
+  display: flex;  
+  justify-content: space-between;
+  margin-top: 8px;
+}
+
+.carte_bottom {
+  position: absolute;
+  bottom: 0;        
+  width: 100%;       
+  display: flex;     
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.carte_atk,
+.carte_hp {
+  flex: 1;
+  text-align: center;
+}
+
+.carte_atk, .carte_evoatk {
+    margin-left: -55px;
+}
+
+.carte_hp, .carte_evohp {
+    text-align: right;
+    margin-right: -40px;
+}
+
+header {
+    background-color: black;
+}
+
+nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+}
+a {
+    text-decoration: none;
+    
+}
+
+a:visited {
+    color:inherit
+}
