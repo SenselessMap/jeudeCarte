@@ -1,0 +1,18 @@
+{% for card in cards %}
+    <article class="carte vertical">
+        <img class="carte_image" src="{{ card.image_url | e }}" alt="{{ card.nom | e }}">
+        <div class="horizontal carte_header">
+            <h2 class="carte_mana">{{ card.manacost }}</h2>
+            <h3 class="carte_nom">{{ card.nom | e }}</h3>
+        </div>
+        <div class="horizontal carte_bottom">
+            {% if card.cardtype == 'sigil' or card.cardtype == 'spell' %}
+                <h2 class="carte_atk"></h2>
+                <h2 class="carte_hp"></h2>
+            {% else %}
+                <h2 class="carte_atk">{{ card.atk }}</h2>
+                <h2 class="carte_hp">{{ card.hp }}</h2>
+            {% endif %}
+        </div>
+    </article>
+{% endfor %}
