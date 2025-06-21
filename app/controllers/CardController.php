@@ -12,18 +12,21 @@ class CardController {
     }
 
     public function index() {
-        session_start();
         $cardModel = new Card($this->pdo);
         $cards = $cardModel->getAll();
+        $isLoggedIn = isset($_SESSION['id_utilisateur']);
 
         echo $this->twig->render('card/collection.twig', [
-            'cards' => $cards
+            'cards' => $cards,
+            'session' => $_SESSION,
+            'isLoggedIn' => $isLoggedIn
         ]);
     }
 
 
+
     public function addCard() {
-        session_start();
+        //session_start();
 
         if (!isset($_SESSION['id_utilisateur'])) {
             header('Location: /login');

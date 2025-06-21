@@ -1,17 +1,16 @@
 <?php
-// test
 require_once __DIR__ . '/../models/User.php'; 
 
 class UserController {
     private $userModel;
+    private $twig;
 
-    public function __construct($pdo) {
+    public function __construct($pdo, $twig) {
         $this->userModel = new User($pdo);
+        $this->twig = $twig; 
     }
 
     public function login() {
-        session_start();
-
         $error = '';
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -29,14 +28,16 @@ class UserController {
             }
         }
 
-        
-        include __DIR__ . '/../views/login.php'; 
+        echo $this->twig->render('card/login.twig', ['error' => $error]);
     }
+
+
+
     public function logout() {
         session_start();
         session_unset();  
         session_destroy();
-        header('Location: /login'); // * a voir
+        header('Location: /'); // a voir
         exit;
     }
 }
