@@ -1,10 +1,3 @@
-{% include 'card/nav.twig' %}
-{% if session.id_utilisateur %}
-    {% include 'card/form.twig' %}
-{% else %}
-    {% include 'card/login.twig' %}
-{% endif %}
-
 {% for card in cards %}
     <article class="carte vertical">
         <img class="carte_image" src="{{ card.image_url | e }}" alt="{{ card.nom | e }}">
@@ -21,5 +14,11 @@
                 <h2 class="carte_hp">{{ card.hp }}</h2>
             {% endif %}
         </div>
+
+        {% if is_admin %}
+            <div class="edit-button" style="margin-top: 8px;">
+                <a href="/SiteCarte/index.php?action=editCard&id={{ card.id_carte }}">Modifier</a>
+            </div>
+        {% endif %}
     </article>
 {% endfor %}

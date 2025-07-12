@@ -15,4 +15,19 @@ class User {
     public function verifyPassword($inputPassword, $hashedPassword) {
         return password_verify($inputPassword, $hashedPassword);
     }
+
+    public function insertUser($nom, $email, $password, $role = 'client') {
+        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+        $stmt = $this->pdo->prepare("
+            INSERT INTO Utilisateur (nom, email, mot_de_passe, role)
+            VALUES (:nom, :email, :mot_de_passe, :role)
+        ");
+        return $stmt->execute([
+            ':nom' => $nom,
+            ':email' => $email,
+            ':mot_de_passe' => $hashedPassword,
+            ':role' => $role
+        ]);
+    }
 }
+?>

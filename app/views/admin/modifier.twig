@@ -1,0 +1,41 @@
+<section class="add-card-form">
+  <h2>Modifier la carte</h2>
+  <form action="/SiteCarte/index.php?action=updateCard" method="post" enctype="multipart/form-data">
+    <input type="hidden" name="id" value="{{ card.id_carte }}" />
+
+    <input type="text" name="nom" placeholder="Card Name" value="{{ card.nom }}" required />
+    <input type="text" name="manacost" placeholder="Mana Cost" value="{{ card.manacost }}" required />
+    <input type="number" name="atk" placeholder="Attack" value="{{ card.atk }}" required />
+    <input type="number" name="hp" placeholder="HP" value="{{ card.hp }}" required />
+
+    <div>
+        <label for="image">Image (main):</label>
+        <input type="file" name="image" id="image" accept="image/png" />
+        {% if card.image_url %}
+          <p>Image actuelle:</p>
+          <img src="/SiteCarte/{{ card.image_url }}" alt="{{ card.nom }}" style="max-width: 100px;" />
+        {% endif %}
+    </div>
+
+    <div>
+        <label for="evolve_image">Evolve (minion seulement):</label>
+        <input type="file" name="evolve_image" id="evolve_image" accept="image/png" />
+        {% if card.evoimage_url %}
+          <p>Image évolution actuelle:</p>
+          <img src="/SiteCarte/{{ card.evoimage_url }}" alt="{{ card.nom }} évolution" style="max-width: 100px;" />
+        {% endif %}
+    </div>
+
+    <div>
+      <label for="cardtype">Type de carte:</label>
+      <select name="cardtype" id="cardtype" required>
+        <option value="">-- Choisissez un type --</option>
+        <option value="Sigil" {% if card.cardtype == 'Sigil' %}selected{% endif %}>Sigil</option>
+        <option value="Minion" {% if card.cardtype == 'Minion' %}selected{% endif %}>Minion</option>
+        <option value="Spell" {% if card.cardtype == 'Spell' %}selected{% endif %}>Spell</option>
+      </select>
+    </div>
+
+    <button type="submit">Modifier</button>
+  </form>
+</section>

@@ -1,0 +1,7 @@
+<h2>{{ card.nom }}</h2>
+<p>Type: {{ card.cardtype }}</p>
+<img src="{{ card.image_url }}" alt="Image">
+{% if card.evoimage_url %}
+    <p>Évolution:</p>
+    <img src="{{ card.evoimage_url }}" alt="Évolution">
+{% endif %}

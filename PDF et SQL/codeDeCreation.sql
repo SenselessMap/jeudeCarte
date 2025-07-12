@@ -1,5 +1,17 @@
 USE tp1_jeudecarte;
 
+--Journal de bord
+CREATE TABLE Logs (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  username VARCHAR(255),
+  ip_address VARCHAR(100),
+  page_visited VARCHAR(255),
+  date DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+--Ajouter le role dans user
+ALTER TABLE Utilisateur ADD COLUMN role VARCHAR(20) NOT NULL DEFAULT 'client';
+
 -- Le site est pour un jeu de carte comme Magic The Gathering ou Hearthstone. Il y a aussi d'autre commande sql dans assets/data/allcards.sql
 
 -- L'utilisateur doit se connecter et est une entité

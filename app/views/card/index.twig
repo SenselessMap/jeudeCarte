@@ -8,15 +8,17 @@
 </head>
 <body>
   <header>
-    {% include 'layout/nav.twig' %}
+    {% include 'card/nav.twig' %}
   </header>
 
   <section class="contenu">
-    {% if is_logged_in %}
+    {% if is_logged_in and is_admin %}
       {% include 'card/form.twig' %}
     {% endif %}
 
-    {% include 'card/collection.twig' %}
+    {% if current_action not in ['journal', 'manageCards'] %}
+      {% include 'card/collection.twig' %}
+    {% endif %}
   </section>
 </body>
 </html>

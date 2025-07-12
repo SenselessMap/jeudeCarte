@@ -1,10 +1,17 @@
 <nav>
   <ul>
     {% if session.id_utilisateur is defined %}
-      <li><a href="/logout">Logout</a></li>
+      <li><a href="{{ asset('index.php?action=logout') }}">Logout</a></li>
+      
+      {% if session.user_role is defined and session.user_role == 'admin' %}
+        <li><a href="{{ asset('index.php?action=journal') }}">Journal de bord</a></li>
+        <li>Admin: donc vous pouvez modifier les cartes en scrollant en bas vers les options</li>
+      {% else %}
+        <li>Vous êtes Client donc on ne voit pas le formulaire pour ajouter des cartes, ni modifier ni le journal debord</li> 
+      {% endif %}
+      
     {% else %}
-      <li><a href="/login">Login</a></li>
+      <li><a href="{{ asset('index.php?action=login') }}">Login</a></li>
     {% endif %}
-    <li><a href="/test">Test</a></li>
   </ul>
 </nav>
