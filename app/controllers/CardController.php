@@ -12,18 +12,154 @@ class CardController {
     }
 
     public function index() {
-        session_start();
         $cardModel = new Card($this->pdo);
         $cards = $cardModel->getAll();
+        $isLoggedIn = isset($_SESSION['id_utilisateur']);
+        $isAdmin = isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin';
 
-        echo $this->twig->render('card/collection.twig', [
-            'cards' => $cards
+        echo $this->twig->render('card/index.twig', [
+            'cards' => $cards,
+            'is_logged_in' => $isLoggedIn,
+            'is_admin' => $isAdmin,
+            'current_action' => 'index' ,
+            'session' => $_SESSION
+        ]);
+    }
+
+
+
+    public function getCard() {
+        if (!isset($_GET['id'])) {
+            http_response_code(400);
+            echo "ID manquant.";
+            return;
+        }
+
+        $cardModel = new Card($this->pdo);
+        $card = $cardModel->getById((int)$_GET['id']);
+
+        if (!$card) {
+            http_response_code(404);
+            echo "Carte non trouvée.";
+            return;
+        }
+
+        echo $this->twig->render('card/details.twig', [
+            'card' => $card,
+            'session' => $_SESSION
+        ]);
+    }
+
+    public function deleteCard() {
+        if (!isset($_GET['id'])) {
+            http_response_code(400);
+            echo "ID requis.";
+            return;
+        }
+
+        $cardModel = new Card($this->pdo);
+        $cardModel->deleteCard((int)$_GET['id']);
+
+        header("Location: index.php?action=index");
+        exit;
+    }
+
+    public function updateCard() {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            http_response_code(405);
+            echo "Méthodecrash";
+            return;
+        }
+
+        $id = isset($_POST['id']) ? (int)$_POST['id'] : null;
+        if (!$id) {
+            http_response_code(400);
+            echo "ID requis.";
+            return;
+        }
+
+        //garde les images
+        $cardModel = new Card($this->pdo);
+        $existingCard = $cardModel->getById($id);
+        if (!$existingCard) {
+            http_response_code(404);
+            echo "Carte introuvable.";
+            return;
+        }
+
+        $uploadDir = __DIR__ . '/../../public/assets/images/';
+
+        $imageUrl = $existingCard['image_url'];
+        if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
+            $ext = strtolower(pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION));
+            if ($ext === 'png') {
+                $imageName = $id . '.png';
+                move_uploaded_file($_FILES['image']['tmp_name'], $uploadDir . $imageName);
+                $imageUrl = 'assets/images/' . $imageName;
+            } else {
+                die('Only PNG images allowed for main image.');
+            }
+        }
+
+        $evoImageUrl = $existingCard['evoimage_url'];
+        if (isset($_FILES['evolve_image']) && $_FILES['evolve_image']['error'] === UPLOAD_ERR_OK) {
+            $ext = strtolower(pathinfo($_FILES['evolve_image']['name'], PATHINFO_EXTENSION));
+            if ($ext === 'png') {
+                $evoImageName = $id . '_evolve.png';
+                move_uploaded_file($_FILES['evolve_image']['tmp_name'], $uploadDir . $evoImageName);
+                $evoImageUrl = 'assets/images/' . $evoImageName;
+            } else {
+                die('Only PNG images allowed for evolve image.');
+            }
+        }
+
+        $data = [
+            ':nom' => $_POST['nom'] ?? '',
+            ':cardtype' => $_POST['cardtype'] ?? '',
+            ':image_url' => $imageUrl,
+            ':evoimage_url' => $evoImageUrl,
+            ':type' => $_POST['type'] ?? '',
+            ':rarity' => $_POST['rarity'] ?? '',
+            ':atk' => $_POST['atk'] ?? null,
+            ':hp' => $_POST['hp'] ?? null,
+            ':evoatk' => $_POST['evoatk'] ?? null,
+            ':evohp' => $_POST['evohp'] ?? null,
+            ':manacost' => $_POST['manacost'] ?? null,
+            ':description' => $_POST['description'] ?? '',
+            ':evodescription' => $_POST['evodescription'] ?? '',
+        ];
+
+        $cardModel->updateCard($id, $data);
+
+        header("Location: index.php?action=index");
+        exit;
+    }
+
+
+    public function editCard() {
+        if (!isset($_GET['id'])) {
+            http_response_code(400);
+            echo "ID manquant.";
+            exit;
+        }
+
+        $cardModel = new Card($this->pdo);
+        $card = $cardModel->getById((int)$_GET['id']);
+
+        if (!$card) {
+            http_response_code(404);
+            echo "Carte non trouvée.";
+            exit;
+        }
+
+        echo $this->twig->render('admin/modifier.twig', [
+            'card' => $card
         ]);
     }
 
 
     public function addCard() {
-        session_start();
+        //session_start();
 
         if (!isset($_SESSION['id_utilisateur'])) {
             header('Location: /login');

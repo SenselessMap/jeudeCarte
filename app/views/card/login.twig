@@ -1,0 +1,14 @@
+<form method="POST" action="">
+    <label>Email:</label>
+    <input type="email" name="email" required>
+
+    <label>Mot de passe:</label>
+    <input type="password" name="mot_de_passe" required>
+
+    <button type="submit">Se connecter</button>
+
+    {% if error %}
+        <p style="color: red;">{{ error }}</p>
+    {% endif %}
+</form><br />
+test@test.com et mot de passe test est un admin

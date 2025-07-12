@@ -1,6 +1,6 @@
 <section class="add-card-form">
-  <h2>Add a New Card</h2>
-  <form action="assets/scripts/ajoutCarte.php" method="post" enctype="multipart/form-data">
+  <h2>Nouvelle carte</h2>
+  <form action="/add-card-action" method="post" enctype="multipart/form-data">
     <input type="text" name="nom" placeholder="Card Name" required />
     <input type="text" name="manacost" placeholder="Mana Cost" required />
     <input type="number" name="atk" placeholder="Attack" required />
@@ -11,7 +11,7 @@
     </div>
 
     <div>
-        <label for="evolve_image">Evolve Image (minion only):</label>
+        <label for="evolve_image">Evolve (minion seulement):</label>
         <input type="file" name="evolve_image" id="evolve_image" accept="image/png">
     </div>
 
@@ -24,6 +24,6 @@
         <option value="Spell">Spell</option>
     </select>
     </div>
-    <button type="submit">Add Card</button>
+    <button type="submit">Ajouter</button>
   </form>
 </section>
